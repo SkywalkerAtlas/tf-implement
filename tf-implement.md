@@ -106,6 +106,7 @@ eval_result = auto_encoder.evaluate(
 *参考资料提供了几乎所有的数据读取所需要的基本内容，建议阅读*
  
 tensorflow提供了大量数据读取相关的API，与一些其它的库结合(numpy,pandas等),tensorflow可以读取基本上所有的常用数据格式，就像在最前面提到的那样，本文不会介绍所有的数据格式读取，请合理谷歌([**eg.** read .mat tensorflow][12])
+
 <p id="feature_columns"></p>
 此外，tensorflow还提供了强大的数据特征列(`feature_columns`)来更好的组织数据输入，有关特征列的信息，目前我还处在为这个掉发中的阶段（用得了讲不清），有问题可以在[issues][13]中交流。官方文档对这部分的内容有非常详细的说明，请参考[官方中文博客-特征列][14]与[特征列官方文档][15]
 
@@ -197,10 +198,12 @@ dataset = tf.data.Dataset.from_tensor_slices((features, labels))
 
 <h3 id="1.3">1.3 从csv文件中读取</h3>
 参考材料
+
 [Reading a CSV File][20]
 
 <h3 id="1.4">1.4 从TFRecord data</h3>
 参考材料
+
 [Consuming TFRecord data][21]
 
 <h2 id="2">2. 模型构建</h2>
@@ -351,6 +354,7 @@ classifier_eval_result = mnist_classifier.evaluate(
 tensorflow下的可视化工具被称为tensorboard，这个工具是和tensorflow一起安装的所以不需要去下载安装别的东西，建议先看下tensorboard的视频介绍：[Hands-on TensorBoard][29]
 
 同样地，谷歌也给出了tensorboard的详细教程
+
 [TensorBoard: Visualizing Learning][30] - 创建summary op，保存数据文件，打开tensorboard 
 [TensorBoard: Graph Visualization][31] - 可视化计算图
 [TensorBoard Histogram Dashboard][32] - 可视化数值分部表，跟踪内部数据分布和变化趋势
@@ -425,6 +429,7 @@ tensorboard --logdir=../log_test
 tensorboard会到所示目录行下查找可以在网页中显式的文件，得到如下图
 
 ![wrong][33]
+
 可以看到计算图被错误的创建了，encoder_output被用作输入，创建了两个根本没用的decoder层
 
 我们更改代码如下
@@ -438,6 +443,7 @@ for index, units in enumerate(params['decoder_units']):
 ```
 
 让我们来看看正确的tensorboard计算图
+
 ![right][34]
 
 可以看到这时候的计算图就是对的了。
@@ -445,11 +451,13 @@ for index, units in enumerate(params['decoder_units']):
 tensorboard可以帮助我们快速的查找并定位模型层面的错误（包括权值和偏置的链接等），直观的加深我们对于模型的理解，极大程度上减少debug的时间。此外，它还有一个非常重要的作用，那就是它可以直观的显式程序中各个节点的命名情况，方便Tensorflow Debugger(tfdbg)中对各个量的查找与调用
 
 <h2 id="4">4. Debugger(tfdbg)</h2>
+
 [Debugger官方文档][35]
 
 对于这个文档有一点要说明的是，这个文档对于Estimator中Debugger hooker的调用有点老旧，建议结合[Estimator的API][36]使用
 
 正如Debugger文档里所描述的那样，要对tenforflow程序debug，在[高层API中][37]我们需要首先创建debughook
+
 ```python
 # Create a LocalCLIDebugHook and use it as a monitor when calling train.
 hooks = [tf_debug.LocalCLIDebugHook()]
@@ -472,6 +480,7 @@ auto_encoder.train(
 ```
 
 然后我们在**命令行**里运行程序
+
 ```
 python3 xxx.py
 ```
@@ -493,6 +502,7 @@ python3 xxx.py
 ```
 pt decoder_1/MatMul
 ```
+
 ![result][41]
 
 然后就可以看到这个节点的数据类型，形状，和具体的值啦
